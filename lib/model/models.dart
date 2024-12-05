@@ -19,12 +19,19 @@ class Result<T> {
   }
 }
 
+
+
 @JsonSerializable()
 class CalculateResult {
   List<CalculateItem> items;
   Nutrition nutrition;
+  @JsonKey(defaultValue: '2024-12-05')
+  String dateTime;
+  @JsonKey(defaultValue: '')
+  String imagePath;
 
-  CalculateResult(this.items, this.nutrition);
+
+  CalculateResult(this.items, this.nutrition, this.dateTime, this.imagePath);
 
   factory CalculateResult.fromJson(Map<String, dynamic> json) =>
       _$CalculateResultFromJson(json);

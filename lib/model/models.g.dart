@@ -12,12 +12,16 @@ CalculateResult _$CalculateResultFromJson(Map<String, dynamic> json) =>
           .map((e) => CalculateItem.fromJson(e as Map<String, dynamic>))
           .toList(),
       Nutrition.fromJson(json['nutrition'] as Map<String, dynamic>),
+      json['dateTime'] as String? ?? '2024-12-05',
+      json['imagePath'] as String? ?? '',
     );
 
 Map<String, dynamic> _$CalculateResultToJson(CalculateResult instance) =>
     <String, dynamic>{
       'items': instance.items,
       'nutrition': instance.nutrition,
+      'dateTime': instance.dateTime,
+      'imagePath': instance.imagePath,
     };
 
 CalculateItem _$CalculateItemFromJson(Map<String, dynamic> json) =>

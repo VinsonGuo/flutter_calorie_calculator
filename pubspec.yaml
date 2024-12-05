@@ -51,6 +51,8 @@ dependencies:
   package_info_plus:
   image_picker: ^1.1.2
   syncfusion_flutter_charts: ^25.0.0
+  syncfusion_flutter_datagrid: ^25.0.0
+  syncfusion_flutter_treemap: ^25.0.0
 
 dev_dependencies:
   flutter_test:

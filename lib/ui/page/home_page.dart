@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_calorie_calculator/model/models.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_treemap/treemap.dart';
 
 import '../../provider/app_provider.dart';
 
@@ -46,11 +47,15 @@ class _HomePageState extends State<HomePage> {
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.camera);
                       if (image != null) {
-                        provider.generateResult(await image.readAsBytes());
+                        final dateTime = DateTime.now();
+                        var uint8list = await image.readAsBytes();
+                        final imagePath =
+                            await provider.copyImage(dateTime, uint8list);
+                        provider.generateResult(dateTime, uint8list, imagePath);
                       }
                     },
                     icon: Icon(Icons.photo_camera),
-                    label: Text('take picture')),
+                    label: Text('Scan Food')),
               ),
               SizedBox(
                 width: 8,
@@ -61,11 +66,15 @@ class _HomePageState extends State<HomePage> {
                       final XFile? image =
                           await picker.pickImage(source: ImageSource.gallery);
                       if (image != null) {
-                        provider.generateResult(await image.readAsBytes());
+                        final dateTime = DateTime.now();
+                        var uint8list = await image.readAsBytes();
+                        final imagePath =
+                            await provider.copyImage(dateTime, uint8list);
+                        provider.generateResult(dateTime, uint8list, imagePath);
                       }
                     },
                     icon: Icon(Icons.add_photo_alternate),
-                    label: Text('Gallery')),
+                    label: Text('Upload Photo')),
               ),
               SizedBox(
                 width: 16,
@@ -79,39 +88,96 @@ class _HomePageState extends State<HomePage> {
                   if (result.isSuccess()) {
                     final item = result.data!;
                     return ExpansionTile(
+                      initiallyExpanded: true,
+                      leading: Image.file(
+                        File(item.imagePath),
+                        width: 100,
+                        height: 100,
+                      ),
                       title: Text(
                           'Total Calories: ${item.nutrition.calories.value} ${item.nutrition.calories.unit}'),
-                      subtitle: Row(
-                        children: [
-                          Expanded(
-                              child: Text(
-                                  'carbs\n${item.nutrition.carbs.value} ${item.nutrition.carbs.unit}')),
-                          Expanded(
-                              child: Text(
-                                  'fat\n${item.nutrition.fat.value} ${item.nutrition.fat.unit}')),
-                          Expanded(
-                              child: Text(
-                                  'protein\n${item.nutrition.protein.value} ${item.nutrition.protein.unit}')),
-                          Expanded(
-                              child: Text(
-                                  'fibers\n${item.nutrition.fibers.value} ${item.nutrition.fibers.unit}')),
-                        ],
-                      ),
+                      subtitle:  Text(item.dateTime),
                       children: [
-                        SfCircularChart(
-                          legend: Legend(isVisible: true),
-                          series: <PieSeries<CalculateItem, String>>[
-                            PieSeries<CalculateItem, String>(
-                              dataSource: item.items,
-                              xValueMapper: (CalculateItem data, _) =>
-                                  data.name,
-                              yValueMapper: (CalculateItem data, _) =>
-                                  num.tryParse(data.calories.value) ?? 0,
-                              dataLabelSettings:
-                                  DataLabelSettings(isVisible: true),
+                        SingleChildScrollView(
+                          scrollDirection:Axis.horizontal,
+                          child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(label: Text("Nutrition")),
+                              DataColumn(label: Text("Value")),
+                              DataColumn(label: Text("Unit")),
+                            ],
+                            rows: <DataRow>[
+                              DataRow(cells: <DataCell>[
+                                DataCell(Text("Carbs")),
+                                DataCell(Text(item.nutrition.carbs.value)),
+                                DataCell(Text(item.nutrition.carbs.unit)),
+                              ]),
+                              DataRow(cells: <DataCell>[
+                                DataCell(Text("Fat")),
+                                DataCell(Text(item.nutrition.fat.value)),
+                                DataCell(Text(item.nutrition.fat.unit)),
+                              ]),
+                              DataRow(cells: <DataCell>[
+                                DataCell(Text("Protein")),
+                                DataCell(Text(item.nutrition.protein.value)),
+                                DataCell(Text(item.nutrition.protein.unit)),
+                              ]),
+                              DataRow(cells: <DataCell>[
+                                DataCell(Text("Fibers")),
+                                DataCell(Text(item.nutrition.fibers.value)),
+                                DataCell(Text(item.nutrition.fibers.unit)),
+                              ]),
+                            ],
+                          ),
+                        ),
+                        SfTreemap(
+                          dataCount: item.items.length,
+                          weightValueMapper: (int index) =>
+                              double.tryParse(
+                                  item.items[index].calories.value) ??
+                              0.0,
+                          tooltipSettings: TreemapTooltipSettings(
+                            color: Colors.white,
+                            borderColor: Colors.black,
+                            borderWidth: 1,
+                          ),
+                          levels: [
+                            TreemapLevel(
+                              groupMapper: (int index) =>
+                                  item.items[index].name,
+                              labelBuilder:
+                                  (BuildContext context, TreemapTile tile) {
+                                return Text(
+                                  '${tile.group}\n${item.items[tile.indices.first].calories.value} ${item.items[tile.indices.first].calories.unit}',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                );
+                              },
+                              colorValueMapper: (TreemapTile tile) =>
+                                  tile.weight.toInt(),
                             ),
                           ],
-                        )
+                        ),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            columns: const <DataColumn>[
+                              DataColumn(label: Text("Name")),
+                              DataColumn(label: Text("Calories (kcal)")),
+                              DataColumn(label: Text("Quantity")),
+                              DataColumn(label: Text("Unit")),
+                            ],
+                            rows: item.items
+                                .map((e) => DataRow(cells: <DataCell>[
+                                      DataCell(Text(e.name)),
+                                      DataCell(Text(e.calories.value)),
+                                      DataCell(Text(e.quantity)),
+                                      DataCell(Text(e.unit)),
+                                    ]))
+                                .toList(),
+                          ),
+                        ),
                       ],
                     );
                   } else {
