@@ -38,7 +38,7 @@ class _DetailPageState extends State<DetailPage> {
                 DataColumn(label: Text("Quantity")),
                 DataColumn(label: Text("Unit")),
               ],
-              rows: item.items
+              rows: item.ingredients
                   .map((e) => DataRow(cells: <DataCell>[
                 DataCell(Text(e.name)),
                 DataCell(Text(e.calories.value)),
@@ -49,15 +49,15 @@ class _DetailPageState extends State<DetailPage> {
             ),
           ),
           SfTreemap(
-            dataCount: item.items.length,
+            dataCount: item.ingredients.length,
             weightValueMapper: (int index) =>
-                double.tryParse(item.items[index].calories.value) ?? 0.0,
+                double.tryParse(item.ingredients[index].calories.value) ?? 0.0,
             levels: [
               TreemapLevel(
-                groupMapper: (int index) => item.items[index].name,
+                groupMapper: (int index) => item.ingredients[index].name,
                 labelBuilder: (BuildContext context, TreemapTile tile) {
                   return Text(
-                    '${tile.group}\n${item.items[tile.indices.first].calories.value} ${item.items[tile.indices.first].calories.unit}',
+                    '${tile.group}\n${item.ingredients[tile.indices.first].calories.value} ${item.ingredients[tile.indices.first].calories.unit}',
                     textAlign: TextAlign.center,
                   );
                 },

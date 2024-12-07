@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_calorie_calculator/ui/page/detail_page.dart';
 
 import '../../common/data.dart';
@@ -43,9 +42,9 @@ class HomeListTile extends StatelessWidget {
                     },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        fit: BoxFit.fitHeight,
-                        File(item.imagePath),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: item.imagePath,
                       ),
                     ),
                   ),

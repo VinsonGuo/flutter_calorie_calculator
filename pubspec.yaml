@@ -57,6 +57,12 @@ dependencies:
   loading_animation_widget:
   photo_view: ^0.15.0
   sqflite:
+  uuid: ^3.0.7
+  firebase_core:
+  firebase_auth:
+  google_sign_in:
+  cloud_firestore:
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:

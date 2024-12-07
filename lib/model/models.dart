@@ -19,12 +19,10 @@ class Result<T> {
   }
 }
 
-
-
 @JsonSerializable()
 class CalculateResult {
-  int? id;
-  List<CalculateItem> items;
+  String? id;
+  List<CalculateIngredient> ingredients;
   Nutrition nutrition;
   @JsonKey(defaultValue: '2024-12-05')
   String dateTime;
@@ -33,7 +31,7 @@ class CalculateResult {
   String suggestion;
 
 
-  CalculateResult(this.id, this.items, this.nutrition, this.dateTime, this.imagePath, this.suggestion);
+  CalculateResult(this.id, this.ingredients, this.nutrition, this.dateTime, this.imagePath, this.suggestion);
 
   factory CalculateResult.fromJson(Map<String, dynamic> json) =>
       _$CalculateResultFromJson(json);
@@ -42,18 +40,18 @@ class CalculateResult {
 }
 
 @JsonSerializable()
-class CalculateItem {
+class CalculateIngredient {
   String name;
   String quantity;
   String unit;
   NutritionItem calories;
 
-  CalculateItem(this.name, this.quantity, this.unit, this.calories);
+  CalculateIngredient(this.name, this.quantity, this.unit, this.calories);
 
-  factory CalculateItem.fromJson(Map<String, dynamic> json) =>
-      _$CalculateItemFromJson(json);
+  factory CalculateIngredient.fromJson(Map<String, dynamic> json) =>
+      _$CalculateIngredientFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CalculateItemToJson(this);
+  Map<String, dynamic> toJson() => _$CalculateIngredientToJson(this);
 }
 
 @JsonSerializable()

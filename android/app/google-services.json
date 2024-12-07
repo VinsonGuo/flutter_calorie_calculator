@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "653739013774",
+    "project_id": "flutter-calorie-calculator",
+    "storage_bucket": "flutter-calorie-calculator.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653739013774:android:c22be8e794309290103bdf",
+        "android_client_info": {
+          "package_name": "com.vinsonguo.flutter_calorie_calculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653739013774-knuqjdacpo68b4qbmlrgo4aie10jljr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCMmWy8AUSv7KwDFhu05Y_LXfbpWjo3cQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653739013774-knuqjdacpo68b4qbmlrgo4aie10jljr2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "653739013774-s2bp1he54m05tv0a55vc2vv8jig3f48k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vinsonguo.flutteriptvclient.flutterIptvClient"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

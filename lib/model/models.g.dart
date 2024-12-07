@@ -8,9 +8,9 @@ part of 'models.dart';
 
 CalculateResult _$CalculateResultFromJson(Map<String, dynamic> json) =>
     CalculateResult(
-      (json['id'] as num?)?.toInt(),
-      (json['items'] as List<dynamic>)
-          .map((e) => CalculateItem.fromJson(e as Map<String, dynamic>))
+      json['id'] as String?,
+      (json['ingredients'] as List<dynamic>)
+          .map((e) => CalculateIngredient.fromJson(e as Map<String, dynamic>))
           .toList(),
       Nutrition.fromJson(json['nutrition'] as Map<String, dynamic>),
       json['dateTime'] as String? ?? '2024-12-05',
@@ -21,22 +21,23 @@ CalculateResult _$CalculateResultFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$CalculateResultToJson(CalculateResult instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'items': instance.items,
+      'ingredients': instance.ingredients,
       'nutrition': instance.nutrition,
       'dateTime': instance.dateTime,
       'imagePath': instance.imagePath,
       'suggestion': instance.suggestion,
     };
 
-CalculateItem _$CalculateItemFromJson(Map<String, dynamic> json) =>
-    CalculateItem(
+CalculateIngredient _$CalculateIngredientFromJson(Map<String, dynamic> json) =>
+    CalculateIngredient(
       json['name'] as String,
       json['quantity'] as String,
       json['unit'] as String,
       NutritionItem.fromJson(json['calories'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$CalculateItemToJson(CalculateItem instance) =>
+Map<String, dynamic> _$CalculateIngredientToJson(
+        CalculateIngredient instance) =>
     <String, dynamic>{
       'name': instance.name,
       'quantity': instance.quantity,

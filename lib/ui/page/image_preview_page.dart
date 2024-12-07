@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -47,7 +48,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                   maxScale: PhotoViewComputedScale.contained * 2.0,
                   minScale: PhotoViewComputedScale.contained * 1.0,
                   initialScale: PhotoViewComputedScale.contained * 1.0,
-                  imageProvider: FileImage(File(widget.path)),
+                  imageProvider: CachedNetworkImageProvider(widget.path),
                   heroAttributes: PhotoViewHeroAttributes(tag: widget.path),
                   onTapUp: (_, __, ___) {
                     Navigator.of(context).pop();
